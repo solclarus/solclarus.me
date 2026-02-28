@@ -22,5 +22,34 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Code block styles */
+pre {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+}
+
+pre > code {
+  display: grid;
+  padding: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+code {
+  font-family: var(--font-mono), monospace;
+}
+
+/* Inline code */
+:not(pre) > code {
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  background-color: #f1f5f9;
+  font-size: 0.875em;
+}
+
+.dark :not(pre) > code {
+  background-color: #1e293b;
 }

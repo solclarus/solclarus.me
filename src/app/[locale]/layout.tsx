@@ -1,10 +1,12 @@
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { routing, Link } from "@/i18n/routing";
 import { LocaleSwitcher } from "@/components/locale-switcher";
-import "../globals.css";
+import { siteConfig } from "@/lib/config";
+import "@/app/globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +20,54 @@ const geistMono = Geist_Mono({
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "site" });
+
+  return {
+    metadataBase: new URL(siteConfig.baseUrl),
+    title: {
+      default: t("title"),
+      template: `%s | ${t("title")}`,
+    },
+    description: t("description"),
+    authors: [{ name: siteConfig.author }],
+    creator: siteConfig.author,
+    openGraph: {
+      type: "website",
+      locale: locale === "ja" ? "ja_JP" : "en_US",
+      url: siteConfig.baseUrl,
+      siteName: t("title"),
+      title: t("title"),
+      description: t("description"),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+      creator: siteConfig.social.twitter,
+    },
+    alternates: {
+      canonical: `${siteConfig.baseUrl}/${locale}`,
+      languages: {
+        ja: `${siteConfig.baseUrl}/ja`,
+        en: `${siteConfig.baseUrl}/en`,
+      },
+      types: {
+        "application/rss+xml": `${siteConfig.baseUrl}/${locale}/feed.xml`,
+      },
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+  };
 }
 
 export default async function LocaleLayout({
@@ -72,6 +122,12 @@ export default async function LocaleLayout({
                   className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                 >
                   {t("blog")}
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                >
+                  {t("about")}
                 </Link>
               </nav>
               <LocaleSwitcher locale={locale} />

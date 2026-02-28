@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { getBlogPosts } from "@/lib/blog";
+import { siteConfig } from "@/lib/config";
 
 export async function generateMetadata({
   params,
@@ -10,10 +11,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
+  const url = `${siteConfig.baseUrl}/${locale}/blog`;
 
   return {
     title: t("title"),
     description: t("description"),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      url,
+    },
+    alternates: {
+      canonical: url,
+    },
   };
 }
 

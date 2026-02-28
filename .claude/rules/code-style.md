@@ -5,6 +5,7 @@
 - Use `type` over `interface` unless extending
 - Prefer explicit return types for exported functions
 - Use `import type` for type-only imports
+- Always use absolute imports with `@/` prefix (e.g., `@/lib/config`)
 
 ## React
 

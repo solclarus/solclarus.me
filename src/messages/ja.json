@@ -15,6 +15,16 @@
   },
   "nav": {
     "home": "ホーム",
-    "blog": "ブログ"
+    "blog": "ブログ",
+    "about": "About"
+  },
+  "notFound": {
+    "title": "ページが見つかりません",
+    "description": "お探しのページは存在しません。",
+    "backHome": "ホームに戻る"
+  },
+  "about": {
+    "title": "About",
+    "description": "Solclarusについて"
   }
 }
