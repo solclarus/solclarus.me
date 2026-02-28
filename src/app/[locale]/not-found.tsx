@@ -1,5 +1,5 @@
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export default function NotFound() {
   const t = useTranslations("notFound");
@@ -7,9 +7,7 @@ export default function NotFound() {
   return (
     <main className="flex flex-col items-center justify-center py-20">
       <h1 className="mb-4 text-6xl font-bold text-zinc-900 dark:text-zinc-100">404</h1>
-      <h2 className="mb-2 text-2xl font-semibold text-zinc-800 dark:text-zinc-200">
-        {t("title")}
-      </h2>
+      <h2 className="mb-2 text-2xl font-semibold text-zinc-800 dark:text-zinc-200">{t("title")}</h2>
       <p className="mb-8 text-zinc-600 dark:text-zinc-400">{t("description")}</p>
       <Link
         href="/"

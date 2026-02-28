@@ -1,7 +1,7 @@
-import type { MetadataRoute } from "next";
+import { routing } from "@/i18n/routing";
 import { getBlogPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/config";
-import { routing } from "@/i18n/routing";
+import type { MetadataRoute } from "next";
 
 const baseUrl = siteConfig.baseUrl;
 
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: page === "" ? 1 : 0.8,
-    }))
+    })),
   );
 
   // Blog posts
