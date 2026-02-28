@@ -1,6 +1,11 @@
-import { getTranslations } from "next-intl/server";
-import type { Metadata } from "next";
+import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/config";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,
@@ -25,19 +30,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function AboutPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations({ locale, namespace: "about" });
 
   return (
     <main>
-      <h1 className="mb-8 text-3xl font-bold text-zinc-900 dark:text-zinc-100">
-        {t("title")}
-      </h1>
+      <h1 className="mb-8 text-3xl font-bold text-zinc-900 dark:text-zinc-100">{t("title")}</h1>
       <div className="prose prose-zinc dark:prose-invert max-w-none">
         <p>{siteConfig.author}</p>
         <p>
@@ -49,11 +50,7 @@ export default async function AboutPage({
         <h2>{locale === "ja" ? "リンク" : "Links"}</h2>
         <ul>
           <li>
-            <a
-              href={siteConfig.social.github}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">
               GitHub
             </a>
           </li>

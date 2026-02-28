@@ -1,8 +1,12 @@
-import { getTranslations } from "next-intl/server";
-import type { Metadata } from "next";
-import { Link } from "@/i18n/routing";
+import { Link, routing } from "@/i18n/routing";
 import { getBlogPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/config";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,
@@ -29,6 +33,8 @@ export async function generateMetadata({
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations({ locale, namespace: "blog" });
   const posts = getBlogPosts(locale);
 

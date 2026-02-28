@@ -1,6 +1,10 @@
-import { useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,
@@ -16,15 +20,16 @@ export async function generateMetadata({
   };
 }
 
-export default function Home() {
-  const t = useTranslations();
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations({ locale, namespace: "home" });
 
   return (
     <main>
-      <h1 className="mb-4 text-4xl font-bold text-zinc-900 dark:text-zinc-100">
-        {t("home.greeting")}
-      </h1>
-      <p className="text-lg text-zinc-600 dark:text-zinc-400">{t("home.intro")}</p>
+      <h1 className="mb-4 text-4xl font-bold text-zinc-900 dark:text-zinc-100">{t("greeting")}</h1>
+      <p className="text-lg text-zinc-600 dark:text-zinc-400">{t("intro")}</p>
     </main>
   );
 }

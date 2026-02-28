@@ -1,11 +1,16 @@
-import type { Metadata } from "next";
+import { BottomNav, HomeIcon, BlogIcon, AboutIcon } from "@/components/bottom-nav";
+import { WebsiteJsonLd } from "@/components/json-ld";
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { routing, Link } from "@/i18n/routing";
+import { siteConfig } from "@/lib/config";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations } from "next-intl/server";
-import { routing, Link } from "@/i18n/routing";
-import { LocaleSwitcher } from "@/components/locale-switcher";
-import { siteConfig } from "@/lib/config";
+import type { Metadata } from "next";
 import "@/app/globals.css";
 
 const geistSans = Geist({
@@ -63,12 +68,22 @@ export async function generateMetadata({
         "application/rss+xml": `${siteConfig.baseUrl}/${locale}/feed.xml`,
       },
     },
-    icons: {
-      icon: "/favicon.ico",
-      apple: "/apple-touch-icon.png",
-    },
   };
 }
+
+const themeScript = `
+(function() {
+  var stored = localStorage.getItem('theme');
+  if (stored === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else if (!stored) {
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (systemDark) {
+      document.documentElement.classList.add('dark');
+    }
+  }
+})();
+`;
 
 export default async function LocaleLayout({
   children,
@@ -83,58 +98,57 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  setRequestLocale(locale);
+
   const [messages, t] = await Promise.all([
     getMessages(),
     getTranslations({ locale, namespace: "nav" }),
   ]);
 
+  const navItems = [
+    { href: "/", label: t("home"), icon: <HomeIcon className="h-6 w-6" /> },
+    { href: "/blog", label: t("blog"), icon: <BlogIcon className="h-6 w-6" /> },
+    { href: "/about", label: t("about"), icon: <AboutIcon className="h-6 w-6" /> },
+  ];
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-                if (darkQuery.matches) {
-                  document.documentElement.classList.add('dark');
-                }
-              })();
-            `,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <WebsiteJsonLd locale={locale} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 dark:bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-zinc-50 font-sans antialiased dark:bg-black`}
       >
         <NextIntlClientProvider messages={messages}>
-          <div className="mx-auto max-w-3xl px-6 py-8">
-            <header className="mb-12 flex items-center justify-between">
+          <div className="mx-auto max-w-3xl px-4 pt-6 pb-20 md:px-6 md:pt-8 md:pb-8">
+            {/* Desktop Header */}
+            <header className="mb-8 hidden items-center justify-between md:mb-12 md:flex">
               <nav className="flex gap-6">
-                <Link
-                  href="/"
-                  className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                >
-                  {t("home")}
-                </Link>
-                <Link
-                  href="/blog"
-                  className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                >
-                  {t("blog")}
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                >
-                  {t("about")}
-                </Link>
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
               </nav>
-              <LocaleSwitcher locale={locale} />
+              <div className="flex items-center gap-1">
+                <ThemeToggle />
+                <LocaleSwitcher locale={locale} />
+              </div>
             </header>
-            {children}
+
+            <main>{children}</main>
           </div>
+
+          {/* Mobile Bottom Navigation */}
+          <BottomNav locale={locale} navItems={navItems} />
         </NextIntlClientProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
