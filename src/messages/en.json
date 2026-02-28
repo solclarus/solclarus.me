@@ -1,0 +1,20 @@
+{
+  "site": {
+    "title": "Solclarus",
+    "description": "Solclarus's personal website"
+  },
+  "home": {
+    "greeting": "Hello",
+    "intro": "Welcome to my site. I write about software development and technology."
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Technical articles and notes.",
+    "readMore": "Read more",
+    "noArticles": "No articles yet."
+  },
+  "nav": {
+    "home": "Home",
+    "blog": "Blog"
+  }
+}

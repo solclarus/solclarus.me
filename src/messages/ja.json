@@ -1,0 +1,20 @@
+{
+  "site": {
+    "title": "Solclarus",
+    "description": "Solclarusの個人サイト"
+  },
+  "home": {
+    "greeting": "こんにちは",
+    "intro": "ようこそ、私のサイトへ。ソフトウェア開発や技術について書いています。"
+  },
+  "blog": {
+    "title": "ブログ",
+    "description": "技術記事やメモを書いています。",
+    "readMore": "続きを読む",
+    "noArticles": "記事がありません。"
+  },
+  "nav": {
+    "home": "ホーム",
+    "blog": "ブログ"
+  }
+}
