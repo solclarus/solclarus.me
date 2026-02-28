@@ -11,7 +11,8 @@ export function LocaleSwitcher({ locale }: { locale: string }) {
     <Link
       href={pathname}
       locale={otherLocale}
-      className="text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+      className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+      title={otherLocale === "ja" ? "日本語に切り替え" : "Switch to English"}
     >
       {otherLocale.toUpperCase()}
     </Link>
