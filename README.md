@@ -1,36 +1,172 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# solclarus.me
 
-## Getting Started
+Personal website / Blog
 
-First, run the development server:
+🌐 **https://solclarus.me**
+
+## Tech Stack
+
+| Category         | Technology                   |
+| ---------------- | ---------------------------- |
+| Framework        | Next.js 16 (App Router)      |
+| Language         | TypeScript                   |
+| Styling          | Tailwind CSS v4              |
+| i18n             | next-intl (Japanese/English) |
+| Content          | MDX + gray-matter            |
+| Linter/Formatter | oxlint / oxfmt               |
+| Package Manager  | Bun                          |
+| Hosting          | Vercel                       |
+
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/solclarus/solclarus-me.git
+cd solclarus-me
+
+# Install dependencies
+bun install
+
+# Start development server
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+bun run dev      # Start dev server
+bun run build    # Production build
+bun run start    # Start production server
+bun run lint     # Run oxlint
+bun run format   # Run oxfmt
+```
 
-## Learn More
+## Directory Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+solclarus-me/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── [locale]/           # Locale-based routing (ja/en)
+│   │   │   ├── layout.tsx      # Main layout
+│   │   │   ├── page.tsx        # Home page
+│   │   │   ├── blog/           # Blog
+│   │   │   └── about/          # About page
+│   │   └── globals.css         # Global styles
+│   ├── components/             # UI components
+│   ├── i18n/                   # i18n configuration
+│   ├── lib/                    # Utility functions
+│   └── messages/               # Translation files (en.json, ja.json)
+├── content/
+│   └── blog/                   # Blog posts (MDX)
+│       ├── en/
+│       └── ja/
+└── public/                     # Static files
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Internationalization (i18n)
 
-## Deploy on Vercel
+Locale-based routing powered by **next-intl**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+/ja/blog/hello  → Japanese version
+/en/blog/hello  → English version
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```tsx
+// Server Component
+import { getTranslations } from "next-intl/server";
+const t = await getTranslations("Home");
+
+// Client Component
+import { useTranslations } from "next-intl";
+const t = useTranslations("Home");
+
+// Internal links (auto locale prefix)
+import { Link } from "@/i18n/routing";
+<Link href="/blog">Blog</Link>;
+```
+
+### Layout
+
+**Desktop (md and above):**
+
+```
+┌─────────────────────────────────┐
+│  Home  Blog  About    🌙  EN/JA │  ← Header nav
+├─────────────────────────────────┤
+│            Content              │
+└─────────────────────────────────┘
+```
+
+**Mobile:**
+
+```
+┌─────────────────────────────────┐
+│            Content              │
+├─────────────────────────────────┤
+│    [🏠] [📝] [👤] │ [🌙] [🌐]    │  ← Floating nav
+└─────────────────────────────────┘
+```
+
+### Blog
+
+MDX files are placed in `content/blog/[locale]/`.
+
+```mdx
+---
+title: "Post Title"
+date: "2024-01-01"
+description: "Post description"
+---
+
+## Heading
+
+Body text...
+```
+
+**Processing pipeline:**
+
+```
+MDX file → gray-matter (frontmatter) → @mdx-js/mdx → rehype-pretty-code (syntax highlighting) → React Component
+```
+
+### Theme Toggle
+
+1. Check localStorage on page load
+2. Fall back to system preference (`prefers-color-scheme`)
+3. Apply `dark` class to `<html>`
+4. Use Tailwind's `dark:` prefix for styling
+
+### SEO
+
+- OpenGraph / Twitter cards
+- JSON-LD structured data
+- Auto-generated sitemap
+- Dynamic OG image generation
+- RSS feed (ja/en)
+
+## Adding Blog Posts
+
+1. Create `slug.mdx` in `content/blog/ja/`
+2. Add frontmatter (title, date, description)
+3. Write content in Markdown
+4. Create the same file in `content/blog/en/` for English version
+
+## Components
+
+| File                  | Type   | Description                        |
+| --------------------- | ------ | ---------------------------------- |
+| `bottom-nav.tsx`      | Client | Mobile floating navigation         |
+| `theme-toggle.tsx`    | Client | Dark/light mode toggle             |
+| `locale-switcher.tsx` | Client | Language switcher (JA/EN)          |
+| `toc.tsx`             | Client | Table of contents (auto-generated) |
+| `json-ld.tsx`         | Server | SEO structured data                |
+
+## License
+
+MIT
