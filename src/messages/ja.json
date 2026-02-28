@@ -11,7 +11,9 @@
     "title": "ブログ",
     "description": "技術記事やメモを書いています。",
     "readMore": "続きを読む",
-    "noArticles": "記事がありません。"
+    "noArticles": "記事がありません。",
+    "readingTime": "{minutes}分で読めます",
+    "toc": "目次"
   },
   "nav": {
     "home": "ホーム",

@@ -1,6 +1,6 @@
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 
 const contentDirectory = path.join(process.cwd(), "content/blog");
 
@@ -10,6 +10,13 @@ export interface BlogPost {
   date: string;
   description: string;
   content: string;
+  readingTime: number;
+}
+
+export function calculateReadingTime(content: string): number {
+  const wordsPerMinute = 500;
+  const charCount = content.replace(/\s+/g, "").length;
+  return Math.max(1, Math.ceil(charCount / wordsPerMinute));
 }
 
 export function getBlogPosts(locale: string): BlogPost[] {
@@ -35,6 +42,7 @@ export function getBlogPosts(locale: string): BlogPost[] {
         date: data.date || "",
         description: data.description || "",
         content,
+        readingTime: calculateReadingTime(content),
       };
     })
     .sort((a, b) => (a.date > b.date ? -1 : 1));
@@ -58,5 +66,6 @@ export function getBlogPost(locale: string, slug: string): BlogPost | null {
     date: data.date || "",
     description: data.description || "",
     content,
+    readingTime: calculateReadingTime(content),
   };
 }

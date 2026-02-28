@@ -11,7 +11,9 @@
     "title": "Blog",
     "description": "Technical articles and notes.",
     "readMore": "Read more",
-    "noArticles": "No articles yet."
+    "noArticles": "No articles yet.",
+    "readingTime": "{minutes} min read",
+    "toc": "Table of Contents"
   },
   "nav": {
     "home": "Home",
