@@ -27,6 +27,28 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 - Keep under 50 characters
 - No signature required for this project
 
+### Granularity
+
+When asked to commit, split changes into logical units:
+
+1. **By feature/concern** - Separate unrelated changes
+2. **By type** - Don't mix `feat` and `fix` in one commit
+3. **Dependencies first** - Commit package.json changes separately if significant
+
+Example split:
+
+```
+feat: add bottom navigation component
+feat: add theme toggle functionality
+chore: add vercel speed insights
+```
+
+NOT:
+
+```
+feat: add navigation, theme toggle, and analytics
+```
+
 ## Branches
 
 - `main` - Production branch
