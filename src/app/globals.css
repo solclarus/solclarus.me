@@ -84,37 +84,62 @@
 }
 
 body {
-  background: var(--background);
+  background:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0,
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 2px
+    ),
+    repeating-radial-gradient(
+      circle at 25% 75%,
+      transparent 0,
+      rgba(0, 0, 0, 0.02) 1px,
+      transparent 3px
+    ),
+    var(--background);
+  background-size:
+    4px 4px,
+    6px 6px,
+    auto;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Subtle paper grain texture */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
-}
-
-.dark body::before {
-  opacity: 0.03;
+.dark body {
+  background:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 2px
+    ),
+    repeating-radial-gradient(
+      circle at 25% 75%,
+      transparent 0,
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 3px
+    ),
+    var(--background);
+  background-size:
+    4px 4px,
+    6px 6px,
+    auto;
 }
 
 /* Code block styles */
 pre {
   overflow-x: auto;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
 }
 
 pre > code {
   display: grid;
-  padding: 1rem;
+  padding: 1.25rem 1.5rem;
   font-size: 0.875rem;
-  line-height: 1.5;
+  line-height: 1.7;
+  width: fit-content;
+  min-width: 100%;
 }
 
 code {
