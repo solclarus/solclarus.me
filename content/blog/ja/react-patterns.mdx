@@ -1,0 +1,287 @@
+---
+title: "React でよく使うパターン集"
+date: "2025-02-01"
+description: "日々の開発で使っている React のパターンやテクニックをまとめました。"
+---
+
+## はじめに
+
+React での開発を続けていると、繰り返し使うパターンが見えてきます。この記事では、私が日々の開発でよく使うパターンやテクニックをまとめました。
+
+## コンポーネント設計
+
+### Compound Components パターン
+
+関連するコンポーネントをグループ化し、柔軟な API を提供するパターンです。
+
+```tsx
+// 使用例
+<Card>
+  <Card.Header>
+    <Card.Title>タイトル</Card.Title>
+  </Card.Header>
+  <Card.Content>本文</Card.Content>
+  <Card.Footer>フッター</Card.Footer>
+</Card>
+```
+
+実装例：
+
+```tsx
+function Card({ children }: { children: React.ReactNode }) {
+  return <div className="rounded-lg border bg-card p-4">{children}</div>;
+}
+
+function CardHeader({ children }: { children: React.ReactNode }) {
+  return <div className="mb-4">{children}</div>;
+}
+
+function CardTitle({ children }: { children: React.ReactNode }) {
+  return <h3 className="text-lg font-semibold">{children}</h3>;
+}
+
+// 名前空間として結合
+Card.Header = CardHeader;
+Card.Title = CardTitle;
+Card.Content = CardContent;
+Card.Footer = CardFooter;
+
+export { Card };
+```
+
+### Render Props パターン
+
+ロジックを共有しつつ、レンダリングを呼び出し側に委ねるパターンです。
+
+```tsx
+type MousePosition = { x: number; y: number };
+
+function MouseTracker({ children }: { children: (position: MousePosition) => React.ReactNode }) {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return <>{children(position)}</>;
+}
+
+// 使用例
+<MouseTracker>
+  {({ x, y }) => (
+    <p>
+      マウス位置: ({x}, {y})
+    </p>
+  )}
+</MouseTracker>;
+```
+
+## カスタムフック
+
+### useLocalStorage
+
+ローカルストレージと同期する状態管理フック。
+
+```tsx
+function useLocalStorage<T>(key: string, initialValue: T) {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === "undefined") return initialValue;
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    const valueToStore = value instanceof Function ? value(storedValue) : value;
+    setStoredValue(valueToStore);
+    window.localStorage.setItem(key, JSON.stringify(valueToStore));
+  };
+
+  return [storedValue, setValue] as const;
+}
+
+// 使用例
+const [theme, setTheme] = useLocalStorage("theme", "light");
+```
+
+### useDebounce
+
+値の更新を遅延させるフック。検索入力などで便利です。
+
+```tsx
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+// 使用例
+const [searchTerm, setSearchTerm] = useState("");
+const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+useEffect(() => {
+  // API 呼び出し
+  search(debouncedSearchTerm);
+}, [debouncedSearchTerm]);
+```
+
+### useMediaQuery
+
+メディアクエリの状態を監視するフック。
+
+```tsx
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
+
+// 使用例
+const isMobile = useMediaQuery("(max-width: 768px)");
+```
+
+## パフォーマンス最適化
+
+### useMemo と useCallback
+
+再計算・再生成を防ぐためのメモ化。
+
+```tsx
+// 重い計算のメモ化
+const expensiveResult = useMemo(() => {
+  return items.filter((item) => item.active).map((item) => transform(item));
+}, [items]);
+
+// コールバックのメモ化（子コンポーネントへの props として渡す場合）
+const handleClick = useCallback((id: string) => {
+  setSelected(id);
+}, []);
+```
+
+**注意点：** 何でもメモ化すれば良いわけではありません。メモ化自体にもコストがあるため、本当に必要な場合のみ使用しましょう。
+
+### React.lazy と Suspense
+
+コンポーネントの遅延読み込み。
+
+```tsx
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <HeavyComponent />
+    </Suspense>
+  );
+}
+```
+
+## 状態管理パターン
+
+### Reducer パターン
+
+複雑な状態遷移を管理する場合に便利。
+
+```tsx
+type State = { count: number; step: number };
+type Action = { type: "increment" } | { type: "decrement" } | { type: "setStep"; payload: number };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "increment":
+      return { ...state, count: state.count + state.step };
+    case "decrement":
+      return { ...state, count: state.count - state.step };
+    case "setStep":
+      return { ...state, step: action.payload };
+    default:
+      return state;
+  }
+}
+
+// 使用例
+const [state, dispatch] = useReducer(reducer, { count: 0, step: 1 });
+```
+
+## 型安全なパターン
+
+### Discriminated Union
+
+型の絞り込みを活用したパターン。
+
+```tsx
+type Result<T> =
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; error: Error };
+
+function DataDisplay({ result }: { result: Result<User[]> }) {
+  switch (result.status) {
+    case "loading":
+      return <Spinner />;
+    case "error":
+      return <ErrorMessage error={result.error} />;
+    case "success":
+      return <UserList users={result.data} />;
+  }
+}
+```
+
+### Generic Components
+
+再利用可能な型安全コンポーネント。
+
+```tsx
+type SelectProps<T> = {
+  options: T[];
+  value: T;
+  onChange: (value: T) => void;
+  getLabel: (option: T) => string;
+  getValue: (option: T) => string;
+};
+
+function Select<T>({ options, value, onChange, getLabel, getValue }: SelectProps<T>) {
+  return (
+    <select
+      value={getValue(value)}
+      onChange={(e) => {
+        const selected = options.find((opt) => getValue(opt) === e.target.value);
+        if (selected) onChange(selected);
+      }}
+    >
+      {options.map((option) => (
+        <option key={getValue(option)} value={getValue(option)}>
+          {getLabel(option)}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+## まとめ
+
+これらのパターンは、状況に応じて使い分けることが大切です。シンプルな解決策で十分な場合は、無理にパターンを適用する必要はありません。
+
+コードの可読性と保守性を意識しながら、適切なパターンを選択していきましょう。

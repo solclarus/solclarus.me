@@ -1,0 +1,221 @@
+---
+title: "このサイトの技術スタック"
+date: "2025-01-15"
+description: "Next.js 16、Tailwind CSS v4、MDX など、このサイトで使用している技術スタックを紹介します。"
+---
+
+## はじめに
+
+このサイトは、モダンな Web 技術を学ぶ目的も兼ねて構築しました。この記事では、使用している技術スタックとその選定理由を紹介します。
+
+## フレームワーク
+
+### Next.js 16
+
+React ベースのフルスタックフレームワークとして [Next.js](https://nextjs.org/) を採用しています。
+
+```typescript
+// App Router によるシンプルなルーティング
+// src/app/[locale]/blog/[slug]/page.tsx
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
+  // ...
+}
+```
+
+**選定理由：**
+
+- **App Router**: ファイルベースのルーティングと React Server Components のサポート
+- **静的生成 (SSG)**: ブログに最適なビルド時のページ生成
+- **画像最適化**: `next/image` による自動最適化
+- **国際化**: `next-intl` との相性が良い
+
+### TypeScript
+
+型安全性を確保するために TypeScript を使用しています。
+
+```typescript
+// 型定義の例
+export type BlogPost = {
+  slug: string;
+  title: string;
+  date: string;
+  description: string;
+  content: string;
+  readingTime: number;
+};
+```
+
+## スタイリング
+
+### Tailwind CSS v4
+
+スタイリングには [Tailwind CSS v4](https://tailwindcss.com/) を使用しています。
+
+```css
+/* src/app/globals.css */
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  /* ... */
+}
+```
+
+**v4 の特徴：**
+
+- **CSS ファーストの設定**: `tailwind.config.js` が不要に
+- **CSS 変数ベース**: カスタムプロパティとの統合が容易
+- **パフォーマンス向上**: Oxide エンジンによる高速ビルド
+
+### ダークモード
+
+`next-themes` と CSS 変数を組み合わせて、システム設定に連動したダークモードを実装しています。
+
+```tsx
+<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+  {children}
+</ThemeProvider>
+```
+
+## コンテンツ管理
+
+### MDX
+
+ブログ記事は [MDX](https://mdxjs.com/) で記述しています。Markdown 内で React コンポーネントが使えるため、インタラクティブなコンテンツも作成可能です。
+
+```mdx
+---
+title: "記事タイトル"
+date: "2025-01-15"
+description: "記事の説明"
+---
+
+## 見出し
+
+本文を書きます。**太字** や `インラインコード` も使えます。
+```
+
+**使用プラグイン：**
+
+- `remark-gfm`: GitHub Flavored Markdown のサポート
+- `rehype-slug`: 見出しへの ID 付与
+- `rehype-pretty-code`: Shiki によるシンタックスハイライト
+
+## 国際化 (i18n)
+
+### next-intl
+
+日本語と英語の2言語に対応するため、[next-intl](https://next-intl-docs.vercel.app/) を使用しています。
+
+```typescript
+// src/i18n/routing.ts
+export const routing = defineRouting({
+  locales: ["ja", "en"],
+  defaultLocale: "ja",
+});
+```
+
+翻訳ファイルは JSON 形式で管理：
+
+```json
+{
+  "nav": {
+    "home": "ホーム",
+    "blog": "ブログ",
+    "about": "About"
+  }
+}
+```
+
+## 開発ツール
+
+### Bun
+
+パッケージマネージャーおよびランタイムとして [Bun](https://bun.sh/) を使用しています。
+
+```bash
+bun run dev    # 開発サーバー起動
+bun run build  # プロダクションビルド
+```
+
+**メリット：**
+
+- npm/yarn より高速なインストール
+- Node.js 互換のランタイム
+- TypeScript のネイティブサポート
+
+### Oxlint / Oxfmt
+
+Linter と Formatter には [Oxc](https://oxc.rs/) ツールチェーンを使用しています。
+
+```bash
+bun run lint    # oxlint
+bun run format  # oxfmt
+```
+
+ESLint + Prettier より高速で、設定もシンプルです。
+
+## UI コンポーネント
+
+### shadcn/ui ベース
+
+ボタンやツールチップなどの UI コンポーネントは、[shadcn/ui](https://ui.shadcn.com/) のアプローチを参考に実装しています。
+
+```tsx
+// src/components/ui/button.tsx
+export function Button({ className, variant, size, asChild, ...props }: ButtonProps) {
+  const Comp = asChild ? Slot : "button";
+  return <Comp className={cn(buttonVariants({ variant, size, className }))} {...props} />;
+}
+```
+
+### Motion (Framer Motion)
+
+アニメーションには [Motion](https://motion.dev/) を使用しています。
+
+```tsx
+<motion.div
+  initial={{ opacity: 0, scale: 0 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ type: "spring", stiffness: 350, damping: 25 }}
+>
+  {/* ... */}
+</motion.div>
+```
+
+## デプロイ
+
+### Vercel
+
+[Vercel](https://vercel.com/) にデプロイしています。Next.js との相性が抜群で、プッシュするだけで自動デプロイされます。
+
+**使用機能：**
+
+- 自動プレビューデプロイ
+- Analytics
+- Speed Insights
+
+## まとめ
+
+| カテゴリ               | 技術                    |
+| ---------------------- | ----------------------- |
+| フレームワーク         | Next.js 16 (App Router) |
+| 言語                   | TypeScript              |
+| スタイリング           | Tailwind CSS v4         |
+| コンテンツ             | MDX                     |
+| 国際化                 | next-intl               |
+| パッケージマネージャー | Bun                     |
+| Linter/Formatter       | Oxlint / Oxfmt          |
+| アニメーション         | Motion                  |
+| デプロイ               | Vercel                  |
+
+このスタックは個人サイトに最適化していますが、スケールする場合は CMS の導入なども検討できます。
+
+何か質問があれば、お気軽にどうぞ！

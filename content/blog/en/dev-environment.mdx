@@ -1,0 +1,205 @@
+---
+title: "My Development Environment 2025"
+date: "2025-02-15"
+description: "Introducing the tools I use daily: editor, terminal, CLI tools, and more."
+---
+
+## Introduction
+
+Your development environment directly impacts productivity. In this article, I'll introduce the tools and configurations I use in my daily development.
+
+## Editor
+
+### Cursor
+
+I use [Cursor](https://cursor.sh/) as my main editor. It's VS Code-based with integrated AI assistant features.
+
+**Frequently used features:**
+
+- **Cmd + K**: Code generation/editing
+- **Cmd + L**: Chat panel
+- **Tab**: Apply inline suggestions
+
+**Recommended extensions:**
+
+```
+- Tailwind CSS IntelliSense
+- Pretty TypeScript Errors
+- Error Lens
+- GitLens
+```
+
+### Font
+
+I use [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for programming.
+
+```json
+{
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 1.6
+}
+```
+
+## Terminal
+
+### Warp
+
+I use [Warp](https://www.warp.dev/) as my terminal emulator.
+
+**What I like:**
+
+- Modern UI
+- Block display of command history
+- AI command search
+- Fast completions
+
+### Shell
+
+I use zsh with [sheldon](https://github.com/rossmacarthur/sheldon) as the plugin manager.
+
+```toml
+# ~/.config/sheldon/plugins.toml
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+```
+
+### Starship
+
+I customize my prompt with [Starship](https://starship.rs/).
+
+```toml
+# ~/.config/starship.toml
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+```
+
+## CLI Tools
+
+### Essential Tools
+
+| Tool                                             | Purpose          | Replaces |
+| ------------------------------------------------ | ---------------- | -------- |
+| [eza](https://github.com/eza-community/eza)      | ls replacement   | ls       |
+| [bat](https://github.com/sharkdp/bat)            | cat replacement  | cat      |
+| [fd](https://github.com/sharkdp/fd)              | find replacement | find     |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) | grep replacement | grep     |
+| [zoxide](https://github.com/ajeetdsouza/zoxide)  | cd replacement   | cd       |
+| [fzf](https://github.com/junegunn/fzf)           | Fuzzy finder     | -        |
+
+### Alias Configuration
+
+```bash
+# ~/.zshrc
+alias ls="eza --icons"
+alias ll="eza -la --icons"
+alias cat="bat"
+alias find="fd"
+alias grep="rg"
+alias cd="z"
+```
+
+### Git Related
+
+```bash
+# Git aliases
+alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gp="git push"
+alias gl="git log --oneline -10"
+alias gd="git diff"
+alias gco="git checkout"
+alias gb="git branch"
+```
+
+[lazygit](https://github.com/jesseduffield/lazygit) is also handy:
+
+```bash
+alias lg="lazygit"
+```
+
+## Package Managers
+
+### Homebrew
+
+I use [Homebrew](https://brew.sh/) for macOS package management.
+
+```bash
+# Common commands
+brew install <package>
+brew upgrade
+brew cleanup
+brew list
+```
+
+### Bun
+
+I use [Bun](https://bun.sh/) for JavaScript/TypeScript projects.
+
+```bash
+bun install      # Install packages
+bun run dev      # Run scripts
+bun add <pkg>    # Add package
+bun remove <pkg> # Remove package
+```
+
+## Other Tools
+
+### Docker Desktop
+
+I use [Docker Desktop](https://www.docker.com/products/docker-desktop/) for container management.
+
+### Raycast
+
+I use [Raycast](https://www.raycast.com/) as my launcher. A great Spotlight replacement.
+
+**Frequently used features:**
+
+- Application launcher
+- Clipboard history
+- Snippets
+- Window management
+
+### Arc Browser
+
+I use [Arc](https://arc.net/) as my browser.
+
+**What I like:**
+
+- Spaces for tab organization
+- Sidebar pinning
+- Minimal UI
+
+## Dotfiles Management
+
+I manage my configuration files on GitHub. Makes it easy to set up new machines.
+
+```bash
+# Dotfiles setup
+git clone https://github.com/username/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+./install.sh
+```
+
+## Conclusion
+
+I'm constantly evolving my development environment. It's important to try new tools and build an environment that works for you.
+
+If you have any tool recommendations, please let me know!

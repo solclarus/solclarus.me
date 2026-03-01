@@ -1,0 +1,221 @@
+---
+title: "Tech Stack of This Site"
+date: "2025-01-15"
+description: "Introducing the tech stack used in this site: Next.js 16, Tailwind CSS v4, MDX, and more."
+---
+
+## Introduction
+
+I built this site with the goal of learning modern web technologies. In this article, I'll introduce the tech stack and the reasons behind my choices.
+
+## Framework
+
+### Next.js 16
+
+I'm using [Next.js](https://nextjs.org/) as a React-based full-stack framework.
+
+```typescript
+// Simple routing with App Router
+// src/app/[locale]/blog/[slug]/page.tsx
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
+  // ...
+}
+```
+
+**Why I chose it:**
+
+- **App Router**: File-based routing with React Server Components support
+- **Static Generation (SSG)**: Perfect for blogs with build-time page generation
+- **Image Optimization**: Automatic optimization with `next/image`
+- **Internationalization**: Great compatibility with `next-intl`
+
+### TypeScript
+
+I use TypeScript to ensure type safety.
+
+```typescript
+// Type definition example
+export type BlogPost = {
+  slug: string;
+  title: string;
+  date: string;
+  description: string;
+  content: string;
+  readingTime: number;
+};
+```
+
+## Styling
+
+### Tailwind CSS v4
+
+I use [Tailwind CSS v4](https://tailwindcss.com/) for styling.
+
+```css
+/* src/app/globals.css */
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  /* ... */
+}
+```
+
+**v4 Features:**
+
+- **CSS-first configuration**: No more `tailwind.config.js`
+- **CSS variable based**: Easy integration with custom properties
+- **Performance improvements**: Faster builds with Oxide engine
+
+### Dark Mode
+
+I implement dark mode that syncs with system preferences using `next-themes` and CSS variables.
+
+```tsx
+<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+  {children}
+</ThemeProvider>
+```
+
+## Content Management
+
+### MDX
+
+Blog posts are written in [MDX](https://mdxjs.com/). Since you can use React components within Markdown, it's possible to create interactive content.
+
+```mdx
+---
+title: "Article Title"
+date: "2025-01-15"
+description: "Article description"
+---
+
+## Heading
+
+Write your content here. **Bold** and `inline code` work too.
+```
+
+**Plugins used:**
+
+- `remark-gfm`: GitHub Flavored Markdown support
+- `rehype-slug`: Adding IDs to headings
+- `rehype-pretty-code`: Syntax highlighting with Shiki
+
+## Internationalization (i18n)
+
+### next-intl
+
+I use [next-intl](https://next-intl-docs.vercel.app/) to support Japanese and English.
+
+```typescript
+// src/i18n/routing.ts
+export const routing = defineRouting({
+  locales: ["ja", "en"],
+  defaultLocale: "ja",
+});
+```
+
+Translation files are managed in JSON format:
+
+```json
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "about": "About"
+  }
+}
+```
+
+## Development Tools
+
+### Bun
+
+I use [Bun](https://bun.sh/) as both package manager and runtime.
+
+```bash
+bun run dev    # Start dev server
+bun run build  # Production build
+```
+
+**Benefits:**
+
+- Faster installation than npm/yarn
+- Node.js compatible runtime
+- Native TypeScript support
+
+### Oxlint / Oxfmt
+
+I use the [Oxc](https://oxc.rs/) toolchain for linting and formatting.
+
+```bash
+bun run lint    # oxlint
+bun run format  # oxfmt
+```
+
+Faster than ESLint + Prettier with simpler configuration.
+
+## UI Components
+
+### shadcn/ui Based
+
+UI components like buttons and tooltips are implemented following the [shadcn/ui](https://ui.shadcn.com/) approach.
+
+```tsx
+// src/components/ui/button.tsx
+export function Button({ className, variant, size, asChild, ...props }: ButtonProps) {
+  const Comp = asChild ? Slot : "button";
+  return <Comp className={cn(buttonVariants({ variant, size, className }))} {...props} />;
+}
+```
+
+### Motion (Framer Motion)
+
+I use [Motion](https://motion.dev/) for animations.
+
+```tsx
+<motion.div
+  initial={{ opacity: 0, scale: 0 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ type: "spring", stiffness: 350, damping: 25 }}
+>
+  {/* ... */}
+</motion.div>
+```
+
+## Deployment
+
+### Vercel
+
+I deploy to [Vercel](https://vercel.com/). It has excellent compatibility with Next.js and auto-deploys on push.
+
+**Features used:**
+
+- Automatic preview deployments
+- Analytics
+- Speed Insights
+
+## Summary
+
+| Category         | Technology              |
+| ---------------- | ----------------------- |
+| Framework        | Next.js 16 (App Router) |
+| Language         | TypeScript              |
+| Styling          | Tailwind CSS v4         |
+| Content          | MDX                     |
+| i18n             | next-intl               |
+| Package Manager  | Bun                     |
+| Linter/Formatter | Oxlint / Oxfmt          |
+| Animation        | Motion                  |
+| Deployment       | Vercel                  |
+
+This stack is optimized for a personal site, but could be extended with a CMS for scaling.
+
+Feel free to ask if you have any questions!

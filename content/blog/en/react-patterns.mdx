@@ -1,0 +1,287 @@
+---
+title: "React Patterns I Use Often"
+date: "2025-02-01"
+description: "A collection of React patterns and techniques I use in daily development."
+---
+
+## Introduction
+
+As you continue developing with React, you start to notice patterns that you use repeatedly. In this article, I've compiled the patterns and techniques I frequently use in my daily development.
+
+## Component Design
+
+### Compound Components Pattern
+
+A pattern for grouping related components and providing a flexible API.
+
+```tsx
+// Usage
+<Card>
+  <Card.Header>
+    <Card.Title>Title</Card.Title>
+  </Card.Header>
+  <Card.Content>Content</Card.Content>
+  <Card.Footer>Footer</Card.Footer>
+</Card>
+```
+
+Implementation:
+
+```tsx
+function Card({ children }: { children: React.ReactNode }) {
+  return <div className="rounded-lg border bg-card p-4">{children}</div>;
+}
+
+function CardHeader({ children }: { children: React.ReactNode }) {
+  return <div className="mb-4">{children}</div>;
+}
+
+function CardTitle({ children }: { children: React.ReactNode }) {
+  return <h3 className="text-lg font-semibold">{children}</h3>;
+}
+
+// Combine as namespace
+Card.Header = CardHeader;
+Card.Title = CardTitle;
+Card.Content = CardContent;
+Card.Footer = CardFooter;
+
+export { Card };
+```
+
+### Render Props Pattern
+
+A pattern for sharing logic while delegating rendering to the caller.
+
+```tsx
+type MousePosition = { x: number; y: number };
+
+function MouseTracker({ children }: { children: (position: MousePosition) => React.ReactNode }) {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return <>{children(position)}</>;
+}
+
+// Usage
+<MouseTracker>
+  {({ x, y }) => (
+    <p>
+      Mouse position: ({x}, {y})
+    </p>
+  )}
+</MouseTracker>;
+```
+
+## Custom Hooks
+
+### useLocalStorage
+
+A state management hook that syncs with local storage.
+
+```tsx
+function useLocalStorage<T>(key: string, initialValue: T) {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === "undefined") return initialValue;
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    const valueToStore = value instanceof Function ? value(storedValue) : value;
+    setStoredValue(valueToStore);
+    window.localStorage.setItem(key, JSON.stringify(valueToStore));
+  };
+
+  return [storedValue, setValue] as const;
+}
+
+// Usage
+const [theme, setTheme] = useLocalStorage("theme", "light");
+```
+
+### useDebounce
+
+A hook that delays value updates. Useful for search inputs.
+
+```tsx
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+// Usage
+const [searchTerm, setSearchTerm] = useState("");
+const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+useEffect(() => {
+  // API call
+  search(debouncedSearchTerm);
+}, [debouncedSearchTerm]);
+```
+
+### useMediaQuery
+
+A hook that monitors media query state.
+
+```tsx
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
+
+// Usage
+const isMobile = useMediaQuery("(max-width: 768px)");
+```
+
+## Performance Optimization
+
+### useMemo and useCallback
+
+Memoization to prevent recalculation and recreation.
+
+```tsx
+// Memoize expensive calculations
+const expensiveResult = useMemo(() => {
+  return items.filter((item) => item.active).map((item) => transform(item));
+}, [items]);
+
+// Memoize callbacks (when passing as props to child components)
+const handleClick = useCallback((id: string) => {
+  setSelected(id);
+}, []);
+```
+
+**Note:** Don't memoize everything. Memoization itself has a cost, so only use it when truly necessary.
+
+### React.lazy and Suspense
+
+Lazy loading components.
+
+```tsx
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <HeavyComponent />
+    </Suspense>
+  );
+}
+```
+
+## State Management Patterns
+
+### Reducer Pattern
+
+Useful for managing complex state transitions.
+
+```tsx
+type State = { count: number; step: number };
+type Action = { type: "increment" } | { type: "decrement" } | { type: "setStep"; payload: number };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "increment":
+      return { ...state, count: state.count + state.step };
+    case "decrement":
+      return { ...state, count: state.count - state.step };
+    case "setStep":
+      return { ...state, step: action.payload };
+    default:
+      return state;
+  }
+}
+
+// Usage
+const [state, dispatch] = useReducer(reducer, { count: 0, step: 1 });
+```
+
+## Type-Safe Patterns
+
+### Discriminated Union
+
+A pattern utilizing type narrowing.
+
+```tsx
+type Result<T> =
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; error: Error };
+
+function DataDisplay({ result }: { result: Result<User[]> }) {
+  switch (result.status) {
+    case "loading":
+      return <Spinner />;
+    case "error":
+      return <ErrorMessage error={result.error} />;
+    case "success":
+      return <UserList users={result.data} />;
+  }
+}
+```
+
+### Generic Components
+
+Reusable type-safe components.
+
+```tsx
+type SelectProps<T> = {
+  options: T[];
+  value: T;
+  onChange: (value: T) => void;
+  getLabel: (option: T) => string;
+  getValue: (option: T) => string;
+};
+
+function Select<T>({ options, value, onChange, getLabel, getValue }: SelectProps<T>) {
+  return (
+    <select
+      value={getValue(value)}
+      onChange={(e) => {
+        const selected = options.find((opt) => getValue(opt) === e.target.value);
+        if (selected) onChange(selected);
+      }}
+    >
+      {options.map((option) => (
+        <option key={getValue(option)} value={getValue(option)}>
+          {getLabel(option)}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+## Conclusion
+
+It's important to use these patterns appropriately based on the situation. If a simple solution is sufficient, there's no need to force-fit a pattern.
+
+Choose the right patterns while keeping code readability and maintainability in mind.
