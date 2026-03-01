@@ -1,4 +1,4 @@
-import { BookIcon, HomeIcon, UserIcon } from "lucide-react";
+import { BookIcon, FolderIcon, HomeIcon, UserIcon } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export type NavItem = {
@@ -20,6 +20,12 @@ export const NAVIGATIONS: NavItem[] = [
     label: "Blog",
     icon: BookIcon,
     href: "/blog",
+  },
+  {
+    id: "works",
+    label: "Works",
+    icon: FolderIcon,
+    href: "/works",
   },
   {
     id: "about",

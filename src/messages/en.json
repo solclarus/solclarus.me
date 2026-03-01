@@ -1,12 +1,13 @@
 {
   "site": {
-    "title": "Solclarus",
-    "description": "Solclarus's personal website"
+    "title": "solclarus",
+    "description": "solclarus's personal website"
   },
   "home": {
-    "greeting": "Hi, I'm Solclarus",
+    "greeting": "Hi, I'm solclarus",
     "intro": "I'm a software engineer. I share what I learn about web development and technology.",
-    "recentPosts": "Recent Posts",
+    "featuredWorks": "Works",
+    "recentPosts": "Blog",
     "viewAll": "View all"
   },
   "blog": {
@@ -20,6 +21,7 @@
   "nav": {
     "home": "Home",
     "blog": "Blog",
+    "works": "Works",
     "about": "About"
   },
   "notFound": {
@@ -29,9 +31,15 @@
   },
   "about": {
     "title": "About",
-    "description": "About Solclarus",
+    "description": "About solclarus",
     "bio": "I work on web development, covering everything from frontend to backend. I enjoy trying out new technologies and sharing what I learn on my blog.",
     "interests": "Interests & Skills",
     "links": "Links"
+  },
+  "works": {
+    "title": "Works",
+    "description": "Projects and portfolio I've built.",
+    "featured": "Featured",
+    "other": "Other"
   }
 }
