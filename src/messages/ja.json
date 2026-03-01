@@ -4,8 +4,10 @@
     "description": "Solclarusの個人サイト"
   },
   "home": {
-    "greeting": "こんにちは",
-    "intro": "ようこそ、私のサイトへ。ソフトウェア開発や技術について書いています。"
+    "greeting": "こんにちは、Solclarusです",
+    "intro": "ソフトウェアエンジニアです。Web開発や技術について学んだことを発信しています。",
+    "recentPosts": "最近の記事",
+    "viewAll": "すべて見る"
   },
   "blog": {
     "title": "ブログ",
@@ -27,6 +29,9 @@
   },
   "about": {
     "title": "About",
-    "description": "Solclarusについて"
+    "description": "Solclarusについて",
+    "bio": "Web開発を中心に、フロントエンドからバックエンドまで幅広く取り組んでいます。新しい技術を試したり、学んだことをブログで共有したりしています。",
+    "interests": "興味・技術",
+    "links": "リンク"
   }
 }

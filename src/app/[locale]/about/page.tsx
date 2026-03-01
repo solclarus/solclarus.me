@@ -1,5 +1,6 @@
 import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/config";
+import { Github } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -37,25 +38,46 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const t = await getTranslations({ locale, namespace: "about" });
 
   return (
-    <main>
-      <h1 className="mb-8 text-3xl font-bold text-zinc-900 dark:text-zinc-100">{t("title")}</h1>
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <p>{siteConfig.author}</p>
-        <p>
-          {locale === "ja"
-            ? "ソフトウェアエンジニア。Web開発や技術について書いています。"
-            : "Software Engineer. Writing about web development and technology."}
-        </p>
+    <div className="space-y-12">
+      {/* Profile */}
+      <section className="space-y-6">
+        <h1 className="text-3xl font-bold text-foreground">{t("title")}</h1>
+        <div className="space-y-4">
+          <p className="text-2xl font-semibold text-foreground">{siteConfig.author}</p>
+          <p className="text-lg leading-relaxed text-muted-foreground">{t("bio")}</p>
+        </div>
+      </section>
 
-        <h2>{locale === "ja" ? "リンク" : "Links"}</h2>
-        <ul>
-          <li>
-            <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-          </li>
-        </ul>
-      </div>
-    </main>
+      {/* Interests */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">{t("interests")}</h2>
+        <div className="flex flex-wrap gap-2">
+          {["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Bun"].map((skill) => (
+            <span
+              key={skill}
+              className="rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* Links */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">{t("links")}</h2>
+        <div className="flex flex-col gap-3">
+          <a
+            href={siteConfig.social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Github className="size-5" />
+            <span>github.com/solclarus</span>
+          </a>
+        </div>
+      </section>
+    </div>
   );
 }

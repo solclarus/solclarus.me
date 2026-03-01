@@ -39,28 +39,30 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const posts = getBlogPosts(locale);
 
   return (
-    <main>
-      <h1 className="mb-8 text-3xl font-bold text-zinc-900 dark:text-zinc-100">{t("title")}</h1>
+    <>
+      <h1 className="mb-10 text-3xl font-bold text-foreground">{t("title")}</h1>
 
       {posts.length === 0 ? (
-        <p className="text-zinc-600 dark:text-zinc-400">{t("noArticles")}</p>
+        <p className="text-muted-foreground">{t("noArticles")}</p>
       ) : (
-        <ul className="space-y-8">
+        <div className="space-y-4">
           {posts.map((post) => (
-            <li key={post.slug}>
-              <article>
-                <time className="text-sm text-zinc-500 dark:text-zinc-500">{post.date}</time>
-                <h2 className="mt-1 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                  <Link href={`/blog/${post.slug}`} className="hover:underline">
-                    {post.title}
-                  </Link>
+            <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
+              <article className="rounded-xl border border-transparent bg-card/50 p-5 transition-all duration-200 hover:border-border hover:bg-card hover:shadow-sm">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <time>{post.date}</time>
+                  <span className="size-1 rounded-full bg-muted-foreground/50" />
+                  <span>{t("readingTime", { minutes: post.readingTime })}</span>
+                </div>
+                <h2 className="mt-2 text-xl font-semibold text-foreground group-hover:text-primary/80">
+                  {post.title}
                 </h2>
-                <p className="mt-2 text-zinc-600 dark:text-zinc-400">{post.description}</p>
+                <p className="mt-2 line-clamp-2 text-muted-foreground">{post.description}</p>
               </article>
-            </li>
+            </Link>
           ))}
-        </ul>
+        </div>
       )}
-    </main>
+    </>
   );
 }

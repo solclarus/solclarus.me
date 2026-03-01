@@ -1,7 +1,7 @@
-import { BottomNav, HomeIcon, BlogIcon, AboutIcon } from "@/components/bottom-nav";
+import { FloatingMenu } from "@/components/floating-menu";
 import { WebsiteJsonLd } from "@/components/json-ld";
-import { LocaleSwitcher } from "@/components/locale-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeProvider } from "@/components/theme-provider";
+import { NAVIGATIONS } from "@/config/navigation";
 import { routing, Link } from "@/i18n/routing";
 import { siteConfig } from "@/lib/config";
 import { Analytics } from "@vercel/analytics/react";
@@ -71,20 +71,6 @@ export async function generateMetadata({
   };
 }
 
-const themeScript = `
-(function() {
-  var stored = localStorage.getItem('theme');
-  if (stored === 'dark') {
-    document.documentElement.classList.add('dark');
-  } else if (!stored) {
-    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (systemDark) {
-      document.documentElement.classList.add('dark');
-    }
-  }
-})();
-`;
-
 export default async function LocaleLayout({
   children,
   params,
@@ -105,48 +91,49 @@ export default async function LocaleLayout({
     getTranslations({ locale, namespace: "nav" }),
   ]);
 
-  const navItems = [
-    { href: "/", label: t("home"), icon: <HomeIcon className="h-6 w-6" /> },
-    { href: "/blog", label: t("blog"), icon: <BlogIcon className="h-6 w-6" /> },
-    { href: "/about", label: t("about"), icon: <AboutIcon className="h-6 w-6" /> },
-  ];
+  const navItems = NAVIGATIONS.map((nav) => ({
+    href: nav.href,
+    label: t(nav.id as "home" | "blog" | "about"),
+  }));
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <WebsiteJsonLd locale={locale} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-zinc-50 font-sans antialiased dark:bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background font-sans antialiased`}
       >
-        <NextIntlClientProvider messages={messages}>
-          <div className="mx-auto max-w-3xl px-4 pt-6 pb-20 md:px-6 md:pt-8 md:pb-8">
-            {/* Desktop Header */}
-            <header className="mb-8 hidden items-center justify-between md:mb-12 md:flex">
-              <nav className="flex gap-6">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-              <div className="flex items-center gap-1">
-                <ThemeToggle />
-                <LocaleSwitcher locale={locale} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider messages={messages}>
+            <div className="flex min-h-screen flex-col">
+              <div className="mx-auto w-full max-w-3xl flex-1 px-4 pt-6 pb-24 md:px-6 md:pt-8">
+                <header className="mb-8 hidden items-center justify-between md:mb-12 md:flex">
+                  <nav className="flex gap-6">
+                    {navItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </nav>
+                </header>
+
+                <main>{children}</main>
               </div>
-            </header>
+            </div>
 
-            <main>{children}</main>
-          </div>
-
-          {/* Mobile Bottom Navigation */}
-          <BottomNav locale={locale} navItems={navItems} />
-        </NextIntlClientProvider>
+            <FloatingMenu />
+          </NextIntlClientProvider>
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

@@ -1,17 +1,17 @@
-import fs from "fs";
 import matter from "gray-matter";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 const contentDirectory = path.join(process.cwd(), "content/blog");
 
-export interface BlogPost {
+export type BlogPost = {
   slug: string;
   title: string;
   date: string;
   description: string;
   content: string;
   readingTime: number;
-}
+};
 
 export function calculateReadingTime(content: string): number {
   const wordsPerMinute = 500;

@@ -4,8 +4,10 @@
     "description": "Solclarus's personal website"
   },
   "home": {
-    "greeting": "Hello",
-    "intro": "Welcome to my site. I write about software development and technology."
+    "greeting": "Hi, I'm Solclarus",
+    "intro": "I'm a software engineer. I share what I learn about web development and technology.",
+    "recentPosts": "Recent Posts",
+    "viewAll": "View all"
   },
   "blog": {
     "title": "Blog",
@@ -27,6 +29,9 @@
   },
   "about": {
     "title": "About",
-    "description": "About Solclarus"
+    "description": "About Solclarus",
+    "bio": "I work on web development, covering everything from frontend to backend. I enjoy trying out new technologies and sharing what I learn on my blog.",
+    "interests": "Interests & Skills",
+    "links": "Links"
   }
 }

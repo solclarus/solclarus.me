@@ -88,7 +88,7 @@ export default async function BlogPostPage({
   const url = `${siteConfig.baseUrl}/${locale}/blog/${slug}`;
 
   return (
-    <main>
+    <>
       <ArticleJsonLd
         title={post.title}
         description={post.description}
@@ -98,18 +98,18 @@ export default async function BlogPostPage({
       />
       <article>
         <header className="mb-8">
-          <div className="flex items-center gap-3 text-sm text-zinc-500">
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <time>{post.date}</time>
             <span>·</span>
             <span>{t("readingTime", { minutes: post.readingTime })}</span>
           </div>
-          <h1 className="mt-2 text-3xl font-bold text-zinc-900 dark:text-zinc-100">{post.title}</h1>
+          <h1 className="mt-2 text-3xl font-bold text-foreground">{post.title}</h1>
         </header>
         {toc.length > 0 && <Toc items={toc} title={t("toc")} />}
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <div className="prose prose-neutral dark:prose-invert max-w-none">
           <MDXContent />
         </div>
       </article>
-    </main>
+    </>
   );
 }
