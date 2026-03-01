@@ -45,19 +45,21 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       {posts.length === 0 ? (
         <p className="text-muted-foreground">{t("noArticles")}</p>
       ) : (
-        <div className="space-y-4">
+        <div className="divide-y divide-border/50">
           {posts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-              <article className="rounded-xl border border-transparent bg-card/50 p-5 transition-all duration-200 hover:border-border hover:bg-card hover:shadow-sm">
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              <article className="py-6 transition-colors">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <time>{post.date}</time>
-                  <span className="size-1 rounded-full bg-muted-foreground/50" />
+                  <span>·</span>
                   <span>{t("readingTime", { minutes: post.readingTime })}</span>
                 </div>
-                <h2 className="mt-2 text-xl font-semibold text-foreground group-hover:text-primary/80">
+                <h2 className="mt-1.5 text-lg font-medium text-foreground group-hover:text-primary">
                   {post.title}
                 </h2>
-                <p className="mt-2 line-clamp-2 text-muted-foreground">{post.description}</p>
+                <p className="mt-1.5 line-clamp-1 text-sm text-muted-foreground">
+                  {post.description}
+                </p>
               </article>
             </Link>
           ))}
