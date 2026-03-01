@@ -40,7 +40,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section className="space-y-4">
         <div className="flex items-center gap-4">
           <Image
-            src="https://avatars.githubusercontent.com/u/75738518?v=4"
+            src="/avatar.png"
             alt={siteConfig.author}
             width={64}
             height={64}
