@@ -8,22 +8,14 @@ export const contentType = "image/png";
 
 export default function Icon() {
   return new ImageResponse(
-    <div
+    <img
+      src="https://avatars.githubusercontent.com/u/75738518?v=4"
+      width={32}
+      height={32}
       style={{
-        fontSize: 24,
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "white",
-        fontWeight: 700,
         borderRadius: 6,
       }}
-    >
-      S
-    </div>,
+    />,
     {
       ...size,
     },
