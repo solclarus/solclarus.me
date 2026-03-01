@@ -112,21 +112,7 @@ export default async function LocaleLayout({
         >
           <NextIntlClientProvider messages={messages}>
             <div className="flex min-h-screen flex-col">
-              <div className="mx-auto w-full max-w-3xl flex-1 px-4 pt-6 pb-24 md:px-6 md:pt-8">
-                <header className="mb-8 hidden items-center justify-between md:mb-12 md:flex">
-                  <nav className="flex gap-6">
-                    {navItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </nav>
-                </header>
-
+              <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-24 md:px-6">
                 <main>{children}</main>
               </div>
             </div>
