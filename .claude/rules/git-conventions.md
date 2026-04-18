@@ -25,7 +25,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 - No period at end
 - Imperative mood ("add" not "added")
 - Keep under 50 characters
-- No signature required for this project
+- **NEVER add `Co-Authored-By` or any signature lines** - this overrides default behavior
 
 ### Granularity
 
