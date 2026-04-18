@@ -10,6 +10,7 @@ export type Work = {
   tech: string[];
   github?: string;
   url?: string;
+  favicon?: string;
   status: WorkStatus;
 };
 
@@ -36,6 +37,7 @@ export const WORKS: Work[] = [
     tech: ["React", "TypeScript", "Tailwind CSS", "Recharts", "Zustand"],
     github: "https://github.com/solclarus/jobcan-dashboard",
     url: "https://solclarus.github.io/jobcan-dashboard/",
+    favicon: "/favicons/jobcan-dashboard.svg",
     status: "live",
   },
   {
