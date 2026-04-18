@@ -11,6 +11,18 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import type { Metadata } from "next";
 
+function ViewAllLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+    >
+      {label}
+      <ArrowRight className="size-3.5" />
+    </Link>
+  );
+}
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -80,13 +92,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-foreground">{t("featuredWorks")}</h2>
-            <Link
-              href="/works"
-              className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t("viewAll")}
-              <ArrowRight className="size-3.5" />
-            </Link>
+            <ViewAllLink href="/works" label={t("viewAll")} />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {featuredWorks.map((work) => (
@@ -101,13 +107,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-foreground">{t("recentPosts")}</h2>
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t("viewAll")}
-              <ArrowRight className="size-3.5" />
-            </Link>
+            <ViewAllLink href="/blog" label={t("viewAll")} />
           </div>
           <div className="divide-y divide-border/50">
             {posts.map((post) => (

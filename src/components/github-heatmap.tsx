@@ -14,16 +14,13 @@ function getColor(count: number): string {
 }
 
 export function GitHubHeatmap({ data, username }: Props) {
-  const months: { label: string; weekIndex: number }[] = [];
+  const monthLabels = new Map<number, string>();
   data.weeks.forEach((week, i) => {
     const firstDay = week.contributionDays[0];
     if (!firstDay) return;
     const date = new Date(firstDay.date);
     if (date.getDate() <= 7) {
-      months.push({
-        label: date.toLocaleString("en", { month: "short" }),
-        weekIndex: i,
-      });
+      monthLabels.set(i, date.toLocaleString("en", { month: "short" }));
     }
   });
 
@@ -31,26 +28,22 @@ export function GitHubHeatmap({ data, username }: Props) {
     <div className="space-y-2">
       <div className="overflow-x-auto">
         <div className="min-w-max">
-          {/* Month labels */}
-          <div className="mb-1 flex gap-[3px] pl-0">
-            {data.weeks.map((_, i) => {
-              const month = months.find((m) => m.weekIndex === i);
-              return (
-                <div key={i} className="w-[10px] text-[9px] text-muted-foreground">
-                  {month?.label ?? ""}
-                </div>
-              );
-            })}
+          <div className="mb-1 flex gap-0.75 pl-0">
+            {data.weeks.map((_, i) => (
+              <div key={i} className="w-2.5 text-[9px] text-muted-foreground">
+                {monthLabels.get(i) ?? ""}
+              </div>
+            ))}
           </div>
           {/* Grid */}
-          <div className="flex gap-[3px]">
+          <div className="flex gap-0.75">
             {data.weeks.map((week, wi) => (
-              <div key={wi} className="flex flex-col gap-[3px]">
+              <div key={wi} className="flex flex-col gap-0.75">
                 {week.contributionDays.map((day) => (
                   <div
                     key={day.date}
                     title={`${day.date}: ${day.contributionCount} contributions`}
-                    className={`size-[10px] rounded-sm ${getColor(day.contributionCount)}`}
+                    className={`size-2.5 rounded-sm ${getColor(day.contributionCount)}`}
                   />
                 ))}
               </div>
@@ -69,9 +62,9 @@ export function GitHubHeatmap({ data, username }: Props) {
         </a>
         <div className="flex items-center gap-1">
           <span>Less</span>
-          <div className="flex gap-[3px]">
+          <div className="flex gap-0.75">
             {[0, 2, 5, 8, 11].map((n) => (
-              <div key={n} className={`size-[10px] rounded-sm ${getColor(n)}`} />
+              <div key={n} className={`size-2.5 rounded-sm ${getColor(n)}`} />
             ))}
           </div>
           <span>More</span>
