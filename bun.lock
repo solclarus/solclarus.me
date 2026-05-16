@@ -25,7 +25,7 @@
         "next-themes": "^0.4.6",
         "react": "19.2.5",
         "react-circle-flags": "^0.0.29",
-        "react-dom": "19.2.3",
+        "react-dom": "19.2.6",
         "rehype-pretty-code": "^0.14.3",
         "rehype-slug": "^6.0.0",
         "remark-gfm": "^4.0.1",
@@ -1055,7 +1055,7 @@
 
     "react-circle-flags": ["react-circle-flags@0.0.29", "", { "dependencies": { "eslint-plugin-testing-library": "^7.16.2" }, "peerDependencies": { "react": "^16.0.0 || 17.x || 18.x || 19.x" } }, "sha512-LNZpP/FUeqei3HqXGn+bqz9vSMbT7yJuDXNjwewUFk/7WhZp6UsMtmtKo1dev93EFjgfRlxYj3c0eL42GEjdlw=="],
 
-    "react-dom": ["react-dom@19.2.3", "", { "dependencies": { "scheduler": "^0.27.0" }, "peerDependencies": { "react": "^19.2.3" } }, "sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg=="],
+    "react-dom": ["react-dom@19.2.6", "", { "dependencies": { "scheduler": "^0.27.0" }, "peerDependencies": { "react": "^19.2.6" } }, "sha512-0prMI+hvBbPjsWnxDLxlCGyM8PN6UuWjEUCYmZhO67xIV9Xasa/r/vDnq+Xyq4Lo27g8QSbO5YzARu0D1Sps3g=="],
 
     "react-is": ["react-is@17.0.2", "", {}, "sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w=="],
 
