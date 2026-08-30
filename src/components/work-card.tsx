@@ -23,9 +23,10 @@ export function WorkCard({ work, locale }: Props) {
 
   return (
     <motion.article
+      tabIndex={0}
       whileHover={{ x: 3 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className="group relative rounded-lg border border-border bg-card/50 p-4 transition-colors duration-300 hover:border-brand/40 hover:bg-card hover:shadow-md"
+      className="group relative rounded-lg border border-border bg-card/50 p-4 transition-colors duration-300 outline-none hover:border-brand/40 hover:bg-card hover:shadow-md focus-visible:border-brand/40 focus-visible:bg-card"
     >
       <div className="space-y-3">
         <div className="flex items-start justify-between gap-2">
@@ -47,9 +48,11 @@ export function WorkCard({ work, locale }: Props) {
           <WorkStatusBadge status={work.status} />
         </div>
 
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          {work.description[locale as "ja" | "en"]}
-        </p>
+        <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr] group-focus:grid-rows-[1fr]">
+          <p className="overflow-hidden text-sm leading-relaxed text-muted-foreground">
+            {work.description[locale as "ja" | "en"]}
+          </p>
+        </div>
 
         <div className="flex flex-wrap gap-1.5">
           {work.tech.map((tech) => (
