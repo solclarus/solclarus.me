@@ -1,19 +1,17 @@
 import type { WorkStatus } from "@/config/works";
 
-const STATUS_CONFIG: Record<WorkStatus, { label: string; dotClass: string; textClass: string }> = {
+const STATUS_CONFIG: Record<WorkStatus, { label: string; textClass: string; pulse?: boolean }> = {
   live: {
-    label: "Live",
-    dotClass: "bg-green-500",
-    textClass: "text-green-700 dark:text-green-400",
+    label: "live",
+    textClass: "text-brand",
+    pulse: true,
   },
   building: {
-    label: "Building",
-    dotClass: "bg-amber-500",
-    textClass: "text-amber-700 dark:text-amber-400",
+    label: "building",
+    textClass: "text-amber-600 dark:text-amber-400",
   },
   archived: {
-    label: "Archived",
-    dotClass: "bg-muted-foreground",
+    label: "archived",
     textClass: "text-muted-foreground",
   },
 };
@@ -23,19 +21,16 @@ type Props = {
 };
 
 export function WorkStatusBadge({ status }: Props) {
-  const { label, dotClass, textClass } = STATUS_CONFIG[status];
+  const { label, textClass, pulse } = STATUS_CONFIG[status];
 
   return (
-    <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${textClass}`}>
-      <span className="relative flex size-2">
-        {status === "live" && (
-          <span
-            className={`absolute inline-flex size-full animate-ping rounded-full ${dotClass} opacity-75`}
-          />
-        )}
-        <span className={`relative inline-flex size-2 rounded-full ${dotClass}`} />
-      </span>
+    <span
+      className={`inline-flex items-center gap-1 font-mono text-[11px] tracking-wide ${textClass}`}
+    >
+      <span className="text-muted-foreground/60">[</span>
+      {pulse && <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-brand" />}
       {label}
+      <span className="text-muted-foreground/60">]</span>
     </span>
   );
 }
