@@ -1,6 +1,9 @@
+"use client";
+
 import { GitHubIcon } from "@/components/icons";
 import { WorkStatusBadge } from "@/components/work-status-badge";
 import { Globe } from "lucide-react";
+import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Work } from "@/config/works";
@@ -19,7 +22,11 @@ export function WorkCard({ work, locale }: Props) {
   const isInternalUrl = work.url?.startsWith("/");
 
   return (
-    <article className="group relative rounded-lg border border-border bg-card/50 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:shadow-md">
+    <motion.article
+      whileHover={{ x: 3 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      className="group relative rounded-lg border border-border bg-card/50 p-4 transition-colors duration-300 hover:border-brand/40 hover:bg-card hover:shadow-md"
+    >
       <div className="space-y-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -35,7 +42,7 @@ export function WorkCard({ work, locale }: Props) {
             ) : work.github ? (
               <GitHubIcon className="size-4 shrink-0 text-muted-foreground" />
             ) : null}
-            <h2 className="font-semibold text-foreground">{work.name}</h2>
+            <h2 className="font-heading font-semibold text-foreground">{work.name}</h2>
           </div>
           <WorkStatusBadge status={work.status} />
         </div>
@@ -89,6 +96,6 @@ export function WorkCard({ work, locale }: Props) {
             ))}
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

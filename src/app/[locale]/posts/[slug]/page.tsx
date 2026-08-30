@@ -112,10 +112,10 @@ export default async function PostPage({
             <span>·</span>
             <span>{t("readingTime", { minutes: post.readingTime })}</span>
           </div>
-          <h1 className="mt-2 text-3xl font-bold text-foreground">{post.title}</h1>
+          <h1 className="mt-2 font-heading text-3xl font-bold text-foreground">{post.title}</h1>
         </header>
         {toc.length > 0 && <Toc items={toc} title={t("toc")} />}
-        <div className="prose max-w-none prose-neutral dark:prose-invert">
+        <div className="prose max-w-none prose-neutral dark:prose-invert prose-headings:font-heading prose-a:text-brand">
           <MDXContent />
         </div>
       </article>

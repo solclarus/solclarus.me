@@ -15,6 +15,10 @@ function makeWork(overrides: Partial<Work>): Work {
   };
 }
 
+function renderWorkCard(work: Work) {
+  return render(<WorkCard work={work} locale="ja" />);
+}
+
 describe("WorkCard", () => {
   // Regression test: `getFaviconUrl` calls `new URL(work.url)`, which throws
   // for relative paths like "/usogui-games". The favicon <Image> must never
@@ -22,7 +26,7 @@ describe("WorkCard", () => {
   it("does not throw and skips the favicon image for an internal (relative) url", () => {
     const work = makeWork({ url: "/usogui-games" });
 
-    const { container } = render(<WorkCard work={work} locale="ja" />);
+    const { container } = renderWorkCard(work);
 
     expect(container.querySelector("img")).toBeNull();
   });
@@ -30,7 +34,7 @@ describe("WorkCard", () => {
   it("renders a favicon image for an absolute url without an explicit favicon", () => {
     const work = makeWork({ url: "https://example.com" });
 
-    const { container } = render(<WorkCard work={work} locale="ja" />);
+    const { container } = renderWorkCard(work);
 
     const img = container.querySelector("img");
     expect(img).not.toBeNull();
@@ -40,7 +44,7 @@ describe("WorkCard", () => {
   it("uses the explicit favicon when provided, even for an internal url", () => {
     const work = makeWork({ url: "/usogui-games", favicon: "/favicons/custom.svg" });
 
-    const { container } = render(<WorkCard work={work} locale="ja" />);
+    const { container } = renderWorkCard(work);
 
     const img = container.querySelector("img");
     expect(img).not.toBeNull();
@@ -49,7 +53,7 @@ describe("WorkCard", () => {
   it("falls back to the GitHub icon when there is no url or favicon", () => {
     const work = makeWork({ github: "https://github.com/example/example" });
 
-    const { container } = render(<WorkCard work={work} locale="ja" />);
+    const { container } = renderWorkCard(work);
 
     expect(container.querySelector("img")).toBeNull();
     expect(container.querySelector("svg")).not.toBeNull();

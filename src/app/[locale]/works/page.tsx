@@ -43,7 +43,7 @@ export default async function WorksPage({ params }: { params: Promise<{ locale: 
   return (
     <div className="space-y-10">
       <section className="space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
+        <h1 className="font-heading text-2xl font-bold text-foreground">{t("title")}</h1>
         <p className="text-sm text-muted-foreground">{t("description")}</p>
       </section>
 
@@ -53,7 +53,7 @@ export default async function WorksPage({ params }: { params: Promise<{ locale: 
 
       {labProjects.length > 0 && (
         <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-foreground">{t("lab")}</h2>
+          <h2 className="font-heading text-lg font-semibold text-foreground">{t("lab")}</h2>
           <WorkGrid works={labProjects} locale={locale} />
         </section>
       )}

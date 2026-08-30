@@ -48,7 +48,7 @@ export default async function PostsPage({ params }: { params: Promise<{ locale: 
           { name: tNav("posts"), url: `${siteConfig.baseUrl}/${locale}/posts` },
         ]}
       />
-      <h1 className="mb-10 text-3xl font-bold text-foreground">{t("title")}</h1>
+      <h1 className="mb-10 font-heading text-3xl font-bold text-foreground">{t("title")}</h1>
 
       {posts.length === 0 ? (
         <p className="text-muted-foreground">{t("noArticles")}</p>
@@ -62,7 +62,7 @@ export default async function PostsPage({ params }: { params: Promise<{ locale: 
                   <span>·</span>
                   <span>{t("readingTime", { minutes: post.readingTime })}</span>
                 </div>
-                <h2 className="mt-1.5 text-lg font-medium text-foreground group-hover:text-primary">
+                <h2 className="mt-1.5 font-heading text-lg font-medium text-foreground group-hover:text-brand">
                   {post.title}
                 </h2>
                 <p className="mt-1.5 line-clamp-1 text-sm text-muted-foreground">

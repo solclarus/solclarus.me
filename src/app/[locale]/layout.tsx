@@ -1,5 +1,6 @@
 import { FloatingMenu } from "@/components/floating-menu";
 import { WebsiteJsonLd } from "@/components/json-ld";
+import { TerminalBackdrop } from "@/components/terminal-backdrop";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { routing } from "@/i18n/routing";
@@ -111,6 +112,7 @@ export default async function LocaleLayout({
         >
           <NextIntlClientProvider messages={messages}>
             <TooltipProvider>
+              <TerminalBackdrop />
               <div className="flex min-h-screen flex-col">
                 <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-24 md:px-6">
                   <main>{children}</main>
