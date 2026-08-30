@@ -26,7 +26,7 @@ export const WORKS: Work[] = [
     },
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "MDX"],
     category: "work",
-    github: "https://github.com/solclarus/solclarus-me",
+    github: "https://github.com/solclarus/solclarus.me",
     url: "https://solclarus.me",
     status: "live",
   },

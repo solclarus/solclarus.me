@@ -39,6 +39,8 @@ pnpm lint         # oxlint
 pnpm format       # oxfmt --write
 pnpm typecheck    # tsc --noEmit
 pnpm test         # vitest run
+pnpm test:e2e     # playwright (navigation + axe-core a11y checks)
+pnpm lhci         # Lighthouse CI against a production build
 ```
 
 ## Structure
@@ -48,9 +50,16 @@ pnpm test         # vitest run
 - `src/config/` — site config, nav, and the `WORKS` list (portfolio + lab entries)
 - `content/posts/<locale>/` — MDX blog posts
 
-## Commit messages
+## Branching & commits
 
-Commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are checked by commitlint (via lefthook, and again in CI).
+`main` is protected by a GitHub ruleset (no direct pushes, no force-push/delete, required PR, required
+`check`/`e2e` status checks) that nobody — including the repo owner — can bypass. All changes go
+through a branch + PR.
+
+Branch names follow `<type>/<short-description>`, matching the commit types below (e.g. `feat/add-comment-form`).
+
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are checked by
+commitlint (via lefthook's `commit-msg` hook locally, and again in CI).
 
 ## License
 
