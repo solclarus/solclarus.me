@@ -1,0 +1,38 @@
+{
+  "site": {
+    "title": "solclarus",
+    "description": "solclarusの個人サイト"
+  },
+  "home": {
+    "greeting": "こんにちは、solclarusです",
+    "intro": "ソフトウェアエンジニアです。Web開発や技術について学んだことを発信しています。",
+    "featuredWorks": "Works",
+    "recentPosts": "Posts",
+    "viewAll": "View all"
+  },
+  "posts": {
+    "title": "Posts",
+    "description": "技術記事やメモを書いています。",
+    "readMore": "続きを読む",
+    "noArticles": "記事がありません。",
+    "readingTime": "{minutes}分で読めます",
+    "toc": "目次"
+  },
+  "nav": {
+    "home": "ホーム",
+    "posts": "Posts",
+    "works": "Works"
+  },
+  "notFound": {
+    "title": "ページが見つかりません",
+    "description": "お探しのページは存在しません。",
+    "backHome": "ホームに戻る"
+  },
+  "works": {
+    "title": "Works",
+    "description": "これまでに作ったプロジェクトやポートフォリオ。",
+    "featured": "Featured",
+    "other": "Other",
+    "lab": "Lab"
+  }
+}

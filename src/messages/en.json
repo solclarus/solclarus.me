@@ -1,0 +1,38 @@
+{
+  "site": {
+    "title": "solclarus",
+    "description": "solclarus's personal website"
+  },
+  "home": {
+    "greeting": "Hi, I'm solclarus",
+    "intro": "I'm a software engineer. I share what I learn about web development and technology.",
+    "featuredWorks": "Works",
+    "recentPosts": "Posts",
+    "viewAll": "View all"
+  },
+  "posts": {
+    "title": "Posts",
+    "description": "Technical articles and notes.",
+    "readMore": "Read more",
+    "noArticles": "No articles yet.",
+    "readingTime": "{minutes} min read",
+    "toc": "Table of Contents"
+  },
+  "nav": {
+    "home": "Home",
+    "posts": "Posts",
+    "works": "Works"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you are looking for does not exist.",
+    "backHome": "Back to Home"
+  },
+  "works": {
+    "title": "Works",
+    "description": "Projects and portfolio I've built.",
+    "featured": "Featured",
+    "other": "Other",
+    "lab": "Lab"
+  }
+}

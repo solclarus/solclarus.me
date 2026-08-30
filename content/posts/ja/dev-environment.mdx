@@ -1,0 +1,205 @@
+---
+title: "私の開発環境 2025"
+date: "2025-02-15"
+description: "エディタ、ターミナル、CLI ツールなど、日々の開発で使用している環境を紹介します。"
+---
+
+## はじめに
+
+開発環境は生産性に直結する大事な要素です。この記事では、私が日々の開発で使用しているツールや設定を紹介します。
+
+## エディタ
+
+### Cursor
+
+メインエディタとして [Cursor](https://cursor.sh/) を使用しています。VS Code ベースで、AI アシスタント機能が統合されています。
+
+**よく使う機能：**
+
+- **Cmd + K**: コード生成・編集
+- **Cmd + L**: チャットパネル
+- **Tab**: インラインサジェストの適用
+
+**おすすめ拡張機能：**
+
+```
+- Tailwind CSS IntelliSense
+- Pretty TypeScript Errors
+- Error Lens
+- GitLens
+```
+
+### フォント
+
+プログラミング用フォントは [JetBrains Mono](https://www.jetbrains.com/lp/mono/) を使用しています。
+
+```json
+{
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 1.6
+}
+```
+
+## ターミナル
+
+### Warp
+
+ターミナルエミュレータは [Warp](https://www.warp.dev/) を使用しています。
+
+**気に入っている点：**
+
+- モダンな UI
+- コマンド履歴のブロック表示
+- AI コマンド検索
+- 補完が高速
+
+### シェル
+
+シェルは zsh を使用し、プラグインマネージャーに [sheldon](https://github.com/rossmacarthur/sheldon) を採用しています。
+
+```toml
+# ~/.config/sheldon/plugins.toml
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+```
+
+### Starship
+
+プロンプトは [Starship](https://starship.rs/) でカスタマイズしています。
+
+```toml
+# ~/.config/starship.toml
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+```
+
+## CLI ツール
+
+### 必須ツール
+
+| ツール                                           | 用途                 | 代替 |
+| ------------------------------------------------ | -------------------- | ---- |
+| [eza](https://github.com/eza-community/eza)      | ls の代替            | ls   |
+| [bat](https://github.com/sharkdp/bat)            | cat の代替           | cat  |
+| [fd](https://github.com/sharkdp/fd)              | find の代替          | find |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) | grep の代替          | grep |
+| [zoxide](https://github.com/ajeetdsouza/zoxide)  | cd の代替            | cd   |
+| [fzf](https://github.com/junegunn/fzf)           | ファジーファインダー | -    |
+
+### エイリアス設定
+
+```bash
+# ~/.zshrc
+alias ls="eza --icons"
+alias ll="eza -la --icons"
+alias cat="bat"
+alias find="fd"
+alias grep="rg"
+alias cd="z"
+```
+
+### Git 関連
+
+```bash
+# Git エイリアス
+alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gp="git push"
+alias gl="git log --oneline -10"
+alias gd="git diff"
+alias gco="git checkout"
+alias gb="git branch"
+```
+
+[lazygit](https://github.com/jesseduffield/lazygit) も便利です：
+
+```bash
+alias lg="lazygit"
+```
+
+## パッケージマネージャー
+
+### Homebrew
+
+macOS のパッケージ管理には [Homebrew](https://brew.sh/) を使用。
+
+```bash
+# よく使うコマンド
+brew install <package>
+brew upgrade
+brew cleanup
+brew list
+```
+
+### Bun
+
+JavaScript/TypeScript プロジェクトでは [Bun](https://bun.sh/) を使用。
+
+```bash
+bun install      # パッケージインストール
+bun run dev      # スクリプト実行
+bun add <pkg>    # パッケージ追加
+bun remove <pkg> # パッケージ削除
+```
+
+## その他のツール
+
+### Docker Desktop
+
+コンテナ管理に [Docker Desktop](https://www.docker.com/products/docker-desktop/) を使用。
+
+### Raycast
+
+ランチャーとして [Raycast](https://www.raycast.com/) を使用。Spotlight の代替として便利です。
+
+**よく使う機能：**
+
+- アプリケーションランチャー
+- クリップボード履歴
+- スニペット
+- ウィンドウ管理
+
+### Arc Browser
+
+ブラウザは [Arc](https://arc.net/) を使用しています。
+
+**気に入っている点：**
+
+- スペース機能でタブを整理
+- サイドバーのピン機能
+- ミニマルな UI
+
+## ドットファイル管理
+
+設定ファイルは GitHub で管理しています。新しいマシンでも簡単にセットアップできます。
+
+```bash
+# ドットファイルのセットアップ
+git clone https://github.com/username/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+./install.sh
+```
+
+## まとめ
+
+開発環境は常に進化させています。新しいツールを試しながら、自分に合った環境を構築していくことが大切です。
+
+おすすめのツールがあれば、ぜひ教えてください！

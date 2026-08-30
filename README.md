@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# solclarus.me
 
-## Getting Started
+🌐 https://solclarus.me
 
-First, run the development server:
+Personal site and blog, built with Next.js 16.
+
+## Stack
+
+- **Next.js 16** (App Router, Turbopack)
+- **React 19** / **TypeScript**
+- **Tailwind CSS v4** + [shadcn](https://ui.shadcn.com) (base-ui)
+- **next-intl** — i18n routing for `ja` / `en`
+- **MDX** — blog posts under `content/posts/<locale>/*.mdx`
+- **oxlint** / **oxfmt** — lint & format
+- **lefthook** — git hooks (format + lint on commit, commitlint on commit message, typecheck + build on push)
+- **vitest** — unit tests
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# .env.local
+GITHUB_TOKEN=   # read:user — for the GitHub contributions heatmap on the home page
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Commands
 
-## Learn More
+```bash
+pnpm dev          # dev server
+pnpm build        # production build
+pnpm analyze      # production build with bundle analyzer (ANALYZE=true)
+pnpm lint         # oxlint
+pnpm format       # oxfmt --write
+pnpm typecheck    # tsc --noEmit
+pnpm test         # vitest run
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app/[locale]/` — i18n-routed pages (home, posts, works)
+- `src/app/(lab)/` — standalone experiment pages, outside i18n routing. Each project colocates its own components under `_components/`
+- `src/config/` — site config, nav, and the `WORKS` list (portfolio + lab entries)
+- `content/posts/<locale>/` — MDX blog posts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Commit messages
 
-## Deploy on Vercel
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are checked by commitlint (via lefthook, and again in CI).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
