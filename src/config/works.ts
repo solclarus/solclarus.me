@@ -57,6 +57,32 @@ export const WORKS: Work[] = [
     status: "building",
   },
   {
+    id: "pokefuta-tracker",
+    name: "Pokefuta Tracker",
+    description: {
+      ja: "全国のポケモンマンホール「ポケふた」を地図で巡り、取得済みをチェックできる個人用トラッカー。都道府県・市区町村で絞り込み可能。",
+      en: 'A personal tracker for visiting Japan\'s Pokémon manhole covers ("Pokefuta") on a map, with prefecture/city filtering.',
+    },
+    tech: ["React", "TypeScript", "Vite", "Leaflet", "Zustand"],
+    category: "work",
+    github: "https://github.com/solclarus/pokefuta-tracker",
+    url: "https://solclarus.github.io/pokefuta-tracker/",
+    status: "live",
+  },
+  {
+    id: "radwimps-live",
+    name: "RADWIMPS Live",
+    description: {
+      ja: "RADWIMPSの非公式ライブアーカイブ・セットリスト閲覧アプリ。ワンクリックでセットリストからSpotifyプレイリストを作成できる。",
+      en: "An unofficial RADWIMPS live archive and setlist viewer. Create a Spotify playlist from any setlist with one click.",
+    },
+    tech: ["Next.js", "TypeScript", "Cloudflare Workers", "Tailwind CSS"],
+    category: "work",
+    github: "https://github.com/solclarus/radwimps-live",
+    url: "https://radwimps.solclarus.me",
+    status: "live",
+  },
+  {
     id: "usogui-games",
     name: "嘘喰いゲーム解説",
     description: {
