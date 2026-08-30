@@ -47,7 +47,7 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       locale: locale === "ja" ? "ja_JP" : "en_US",
-      url: siteConfig.baseUrl,
+      url: `${siteConfig.baseUrl}/${locale}`,
       siteName: t("title"),
       title: t("title"),
       description: t("description"),
@@ -67,6 +67,13 @@ export async function generateMetadata({
       types: {
         "application/rss+xml": `${siteConfig.baseUrl}/${locale}/feed.xml`,
       },
+    },
+    icons: {
+      icon: [
+        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      ],
+      apple: "/apple-touch-icon.png",
     },
   };
 }
