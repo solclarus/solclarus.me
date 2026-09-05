@@ -46,7 +46,7 @@ pnpm lhci         # Lighthouse CI against a production build
 ## Structure
 
 - `src/app/[locale]/` — i18n-routed pages (home, posts, works)
-- `src/app/(lab)/` — standalone experiment pages, outside i18n routing. Each project colocates its own components under `_components/`
+- `src/app/lab/` — standalone experiment pages, outside i18n routing. Each project colocates its own components under `_components/`
 - `src/config/` — site config, nav, and the `WORKS` list (portfolio + lab entries)
 - `content/posts/<locale>/` — MDX blog posts
 

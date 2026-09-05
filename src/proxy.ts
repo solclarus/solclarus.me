@@ -4,18 +4,14 @@ import { NextResponse } from "next/server";
 
 const intlMiddleware = createMiddleware(routing);
 
-// Routes under src/app/(lab)/ live outside the [locale] segment and must not
-// be redirected to a locale-prefixed URL. Add new lab route names here when
-// a new page is added under (lab)/.
-const LAB_ROUTES = ["usogui-games"];
+// Routes under src/app/lab/ live outside the [locale] segment and must not
+// be redirected to a locale-prefixed URL.
+const isLabRoute = (pathname: string) => pathname === "/lab" || pathname.startsWith("/lab/");
 
 export function proxy(request: Parameters<typeof intlMiddleware>[0]) {
   const { pathname } = request.nextUrl;
-  const isLabRoute = LAB_ROUTES.some(
-    (route) => pathname === `/${route}` || pathname.startsWith(`/${route}/`),
-  );
 
-  if (isLabRoute) {
+  if (isLabRoute(pathname)) {
     return NextResponse.next();
   }
 

@@ -91,7 +91,7 @@ export const WORKS: Work[] = [
     },
     tech: ["React", "TypeScript"],
     category: "lab",
-    url: "/usogui-games",
+    url: "/lab/usogui-games",
     status: "building",
   },
 ];
