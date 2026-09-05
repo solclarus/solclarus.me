@@ -3,8 +3,8 @@ import type { WorkStatus } from "@/config/works";
 const STATUS_CONFIG: Record<WorkStatus, { label: string; dotClass: string; textClass: string }> = {
   live: {
     label: "Live",
-    dotClass: "bg-green-500",
-    textClass: "text-green-700 dark:text-green-400",
+    dotClass: "bg-brand",
+    textClass: "text-brand",
   },
   building: {
     label: "Building",

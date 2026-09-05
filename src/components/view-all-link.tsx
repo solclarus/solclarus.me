@@ -10,7 +10,7 @@ export function ViewAllLink({ href, label }: Props) {
   return (
     <Link
       href={href}
-      className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-brand"
     >
       {label}
       <ArrowRight className="size-3.5" />
