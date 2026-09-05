@@ -9,7 +9,7 @@ module.exports = {
         "http://localhost:3000/en",
         "http://localhost:3000/ja/works",
         "http://localhost:3000/ja/posts",
-        "http://localhost:3000/usogui-games",
+        "http://localhost:3000/lab/usogui-games",
       ],
       numberOfRuns: 1,
     },

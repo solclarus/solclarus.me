@@ -17,10 +17,10 @@ function makeWork(overrides: Partial<Work>): Work {
 
 describe("WorkCard", () => {
   // Regression test: `getFaviconUrl` calls `new URL(work.url)`, which throws
-  // for relative paths like "/usogui-games". The favicon <Image> must never
+  // for relative paths like "/lab/usogui-games". The favicon <Image> must never
   // be rendered for an internal URL.
   it("does not throw and skips the favicon image for an internal (relative) url", () => {
-    const work = makeWork({ url: "/usogui-games" });
+    const work = makeWork({ url: "/lab/usogui-games" });
 
     const { container } = render(<WorkCard work={work} locale="ja" />);
 
@@ -38,7 +38,7 @@ describe("WorkCard", () => {
   });
 
   it("uses the explicit favicon when provided, even for an internal url", () => {
-    const work = makeWork({ url: "/usogui-games", favicon: "/favicons/custom.svg" });
+    const work = makeWork({ url: "/lab/usogui-games", favicon: "/favicons/custom.svg" });
 
     const { container } = render(<WorkCard work={work} locale="ja" />);
 
